@@ -1,14 +1,19 @@
 import * as React from 'react';
-import { Text, View } from 'react-native';
+import { Button, Text, TextInput, View } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
+import EditorScreen from './components/Editor';
 
 const Stack = createStackNavigator();
 
 function TodoScreen() {
   return (
-    <View>
-      <Text>HTML Editor here ..</Text>
-    </View>
+    <>
+      <View>
+        <TextInput placeholder="Title:" />
+      </View>
+      <EditorScreen />
+      <Button title="Save" />
+    </>
   );
 }
 

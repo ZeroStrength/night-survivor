@@ -2,9 +2,9 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Calendar from './components/Calendar';
-import Todo from './components/Todo';
-import Settings from './components/Settings';
+import Calendar from './pages/Calendar';
+import Todo from './pages/Todo';
+import Settings from './pages/Settings';
 
 const Tab = createBottomTabNavigator();
 
