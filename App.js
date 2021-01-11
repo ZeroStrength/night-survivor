@@ -1,25 +1,10 @@
 import * as React from 'react';
-import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import EditorScreen from './components/Editor';
-
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Home!</Text>
-    </View>
-  );
-}
-
-function SettingsScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings!</Text>
-    </View>
-  );
-}
+import Calendar from './components/Calendar';
+import Todo from './components/Todo';
+import Settings from './components/Settings';
 
 const Tab = createBottomTabNavigator();
 
@@ -30,18 +15,15 @@ export default function App() {
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
-
-            if (route.name === 'Home') {
+            if (route.name === 'ToDo') {
               iconName = focused
-                ? 'ios-information-circle'
-                : 'ios-information-circle-outline';
+                ? 'checkbox'
+                : 'checkbox-outline';
             } else if (route.name === 'Settings') {
               iconName = focused ? 'ios-settings' : 'ios-settings-outline';
-            } else if (route.name === 'Editor') {
+            } else if (route.name === 'Calendar') {
               iconName = focused ? 'ios-calendar' : 'ios-calendar-outline';
             }
-
-            // You can return any component that you like here!
             return <Ionicons name={iconName} size={size} color={color} />;
           },
         })}
@@ -50,10 +32,10 @@ export default function App() {
           inactiveTintColor: 'gray',
         }}
       >
-        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="ToDo" component={Todo} />
         {/* <Tab.Screen name="Home" component={HomeScreen} options={{ tabBarBadge: 3 }} /> */}
-        <Tab.Screen name="Editor" component={EditorScreen} />
-        <Tab.Screen name="Settings" component={SettingsScreen} />
+        <Tab.Screen name="Calendar" component={Calendar} />
+        <Tab.Screen name="Settings" component={Settings} />
       </Tab.Navigator>
     </NavigationContainer>
   );
