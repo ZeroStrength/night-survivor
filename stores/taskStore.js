@@ -7,6 +7,10 @@ const store = observable({
 
   addTask(task) {
     this.tasks.push(task)
+  },
+
+  removeAll() {
+    this.tasks = []
   }
 })
 
