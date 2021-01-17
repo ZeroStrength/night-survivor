@@ -107,12 +107,12 @@ const EditorScreen = ({}) => {
         </View>
         <View style={{ flex: 0.4 }}>
           <Text onPress={() => showDatepicker(true)}>
-            {startDate.toISOString().split("T")[0]}
+            {startDate?.toISOString().split("T")[0]}
           </Text>
         </View>
         <View style={{ flex: 0.4 }}>
           <Text onPress={() => showTimepicker(true)}>
-            {startTime.toTimeString().split(" ")[0]}
+            {startTime?.toTimeString().split(" ")[0]}
           </Text>
         </View>
       </View>
@@ -122,12 +122,12 @@ const EditorScreen = ({}) => {
         </View>
         <View style={{ flex: 0.4 }}>
           <Text onPress={() => showDatepicker(false)}>
-            {endDate.toISOString().split("T")[0]}
+            {endDate?.toISOString().split("T")[0]}
           </Text>
         </View>
         <View style={{ flex: 0.4 }}>
           <Text onPress={() => showTimepicker(false)}>
-            {endTime.toTimeString().split(" ")[0]}
+            {endTime?.toTimeString().split(" ")[0]}
           </Text>
         </View>
       </View>
