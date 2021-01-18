@@ -1,11 +1,11 @@
 import React, { useRef, useState } from "react"
 import {
   Text,
-  Button,
   View,
   TextInput,
   StyleSheet,
-  ScrollView
+  ScrollView,
+  Button
 } from "react-native"
 import DateTimePicker from "@react-native-community/datetimepicker"
 import {
@@ -14,6 +14,7 @@ import {
   RichToolbar
 } from "react-native-pell-rich-editor"
 import Toast from "react-native-toast-message"
+import taskStore from "../../stores/taskStore"
 
 const EditorScreen = ({}) => {
   // const strikethrough = require("./assets/strikethrough.png"); //icon for strikethrough
@@ -91,15 +92,34 @@ const EditorScreen = ({}) => {
     })
   }
 
+  function onSave() {
+    taskStore.addTask({
+      title: text,
+      start: startDate,
+      end: endDate,
+      description: article
+    })
+    Toast.show({
+      position: "bottom",
+      text1: "Successfully saved !",
+      bottomOffset: 65
+    })
+  }
+
   return (
     <>
-      <View>
-        <TextInput
-          style={styles.titleInput}
-          value={text}
-          onChangeText={(text) => onChangeText(text)}
-          placeholder="Title:"
-        />
+      <View style={styles.datetimeLayout}>
+        <View style={{ flex: 0.75 }}>
+          <TextInput
+            style={styles.titleInput}
+            value={text}
+            onChangeText={(text) => onChangeText(text)}
+            placeholder="Title:"
+          />
+        </View>
+        <View style={{ flex: 0.25 }}>
+          <Button title="Save" onPress={onSave} />
+        </View>
       </View>
       <View style={styles.datetimeLayout}>
         <View style={{ flex: 0.2 }}>
