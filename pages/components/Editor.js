@@ -99,11 +99,6 @@ const EditorScreen = ({}) => {
       end: endDate,
       description: article
     })
-    Toast.show({
-      position: "bottom",
-      text1: "Successfully saved !",
-      bottomOffset: 65
-    })
   }
 
   return (
