@@ -5,6 +5,7 @@ import EditorScreen from "./components/Editor"
 import { StyleSheet, Text, View, Modal, Button } from "react-native"
 import { FloatingAction } from "react-native-floating-action"
 import taskStore from "../stores/taskStore"
+import Toast from "react-native-toast-message"
 
 const Stack = createStackNavigator()
 
@@ -33,7 +34,14 @@ function TodoScreen() {
       )}
       <Modal animationType="slide" visible={openEditor}>
         <Button onPress={() => setOpenEditor(false)} title="Close" />
-        <EditorScreen />
+        <EditorScreen
+          onSuccess={() => {
+            setOpenEditor(false)
+            Toast.show({
+              text1: "Successfully saved !"
+            })
+          }}
+        />
       </Modal>
       {/* floating action button to add task */}
       <FloatingAction

@@ -16,7 +16,7 @@ import {
 import Toast from "react-native-toast-message"
 import taskStore from "../../stores/taskStore"
 
-const EditorScreen = ({}) => {
+const EditorScreen = ({ onSuccess }) => {
   // const strikethrough = require("./assets/strikethrough.png"); //icon for strikethrough
   const RichText = useRef() //reference to the RichEditor component
   const [article, setArticle] = useState("")
@@ -86,9 +86,7 @@ const EditorScreen = ({}) => {
     //   "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/100px-React-icon.svg.png"
     // )
     Toast.show({
-      position: "bottom",
-      text1: "Not available now..",
-      bottomOffset: 65
+      text1: "Not available now.."
     })
   }
 
@@ -99,6 +97,7 @@ const EditorScreen = ({}) => {
       end: endDate,
       description: article
     })
+    onSuccess()
   }
 
   return (
