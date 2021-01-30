@@ -21,7 +21,6 @@ function SettingsComponent() {
       </Row>
       <Picker
         selectedValue={selectedValue}
-        style={{ height: 50 }}
         onValueChange={(itemValue) => {
           onSelectedValue(itemValue)
           settingsStore.setLanguage(itemValue)
