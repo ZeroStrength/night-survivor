@@ -133,7 +133,7 @@ export default function Todo() {
       <Stack.Screen
         name="ToDo"
         component={TodoObserver}
-        options={{ title: "Night Survivor > ToDo" }}
+        options={{ title: "ToDo" }}
       />
     </Stack.Navigator>
   )

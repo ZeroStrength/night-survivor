@@ -44,7 +44,7 @@ export default function Settings() {
       <Stack.Screen
         name="Settings"
         component={SettingsScreen}
-        options={{ title: "Night Survivor > Settings" }}
+        options={{ title: "Settings" }}
       />
     </Stack.Navigator>
   )

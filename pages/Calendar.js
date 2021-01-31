@@ -197,7 +197,7 @@ export default function Calendar() {
       <Stack.Screen
         name="Calendar"
         component={A}
-        options={{ title: "Night Survivor > Calendar" }}
+        options={{ title: "Calendar" }}
       />
     </Stack.Navigator>
   )
