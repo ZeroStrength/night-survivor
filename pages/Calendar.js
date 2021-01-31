@@ -20,33 +20,12 @@ import { createStackNavigator } from "@react-navigation/stack"
 import taskStore from "../stores/taskStore"
 import settingsStore from "../stores/settingsStore"
 import "../languages/calendars_locales"
+import { DateTime } from "luxon"
 
 const testIDs = require("../testIDs")
 
 const themeColor = "#00AAAF"
 const lightThemeColor = "#EBF9F9"
-
-const ITEMS = [
-  {
-    title: "2021-01-10",
-    data: [{ hour: "8", duration: "abc", title: "First Yoga" }]
-  },
-  {
-    title: "2021-01-15",
-    data: [
-      { hour: "4pm", duration: "1h", title: "Pilates ABC" },
-      { hour: "5pm", duration: "1h", title: "Vinyasa Yoga" }
-    ]
-  },
-  {
-    title: "2021-01-20",
-    data: [
-      { hour: "1pm", duration: "1h", title: "Ashtanga Yoga" },
-      { hour: "2pm", duration: "1h", title: "Deep Streches" },
-      { hour: "3pm", duration: "1h", title: "Private Yoga" }
-    ]
-  }
-]
 
 const Stack = createStackNavigator()
 
@@ -55,17 +34,17 @@ function HorizontalCalendarList() {
   LocaleConfig.defaultLocale = settingsStore.getLanguage()
 
   const onDateChanged = (date, updateSource) => {
-    console.log("ExpandableCalendarScreen onDateChanged: ", date, updateSource)
+    // console.log("ExpandableCalendarScreen onDateChanged: ", date, updateSource)
   }
 
   const onMonthChange = (month, updateSource) => {
-    console.log("ExpandableCalendarScreen onMonthChange: ", month, updateSource)
+    // console.log("ExpandableCalendarScreen onMonthChange: ", month, updateSource)
   }
 
   const buttonPressed = () => {}
 
-  const itemPressed = (id) => {
-    Alert.alert(id)
+  const itemPressed = (item) => {
+    Alert.alert(item.title, item.start.toISO().split(".")[0].replace("T", " "))
   }
 
   const renderEmptyItem = () => {
@@ -83,7 +62,7 @@ function HorizontalCalendarList() {
 
     return (
       <TouchableOpacity
-        onPress={() => itemPressed(item.title)}
+        onPress={() => itemPressed(item)}
         style={styles.item}
         testID={testIDs.agenda.ITEM}
       >
@@ -92,21 +71,15 @@ function HorizontalCalendarList() {
           <Text style={styles.itemDurationText}>{item.duration}</Text>
         </View>
         <Text style={styles.itemTitleText}>{item.title}</Text>
-        <View style={styles.itemButtonContainer}>
-          <Button color={"grey"} title={"보기"} onPress={buttonPressed} />
-        </View>
       </TouchableOpacity>
     )
   }
 
   const getMarkedDates = () => {
     const marked = {}
-    ITEMS.forEach((item) => {
-      // NOTE: only mark dates with data
-      if (item.data && item.data.length > 0 && !_.isEmpty(item.data[0])) {
-        marked[item.title] = { marked: true }
-      } else {
-        marked[item.title] = { disabled: true }
+    taskStore.tasks.forEach((task) => {
+      marked[DateTime.fromJSDate(new Date(task.start)).toISODate()] = {
+        marked: true
       }
     })
     return marked
@@ -151,7 +124,7 @@ function HorizontalCalendarList() {
 
   return (
     <CalendarProvider
-      date={ITEMS[0].title}
+      date={new Date()} // initial date in yyyy-mm-dd format. Default = Date()
       onDateChanged={onDateChanged}
       onMonthChange={onMonthChange}
       showTodayButton
@@ -167,7 +140,7 @@ function HorizontalCalendarList() {
         // horizontal={false}
         // hideArrows
         disablePan
-        // hideKnob
+        hideKnob
         initialPosition={ExpandableCalendar.positions.OPEN}
         calendarStyle={styles.calendar}
         headerStyle={styles.calendar} // for horizontal only
@@ -180,7 +153,25 @@ function HorizontalCalendarList() {
         rightArrowImageSource={require("../assets/images/next.png")}
       />
       <AgendaList
-        sections={ITEMS}
+        sections={taskStore.tasks.map((task) => {
+          const startLuxon = DateTime.fromJSDate(new Date(task.start))
+          const endLuxon = DateTime.fromJSDate(new Date(task.end))
+          console.log(endLuxon.diff(startLuxon, "hours").hours)
+          return {
+            title: startLuxon.toISODate(),
+            data: [
+              {
+                start: startLuxon,
+                description: task.description,
+                hour: startLuxon.toISOTime().split(":").slice(0, 2).join(":"),
+                duration: `${Math.round(
+                  endLuxon.diff(startLuxon, "hours").hours
+                )}h`,
+                title: task.title
+              }
+            ]
+          }
+        })}
         extraData={{}}
         renderItem={renderItem}
         sectionStyle={styles.section}
