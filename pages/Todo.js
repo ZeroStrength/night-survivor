@@ -9,12 +9,14 @@ import {
   Modal,
   Button,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  SafeAreaView
 } from "react-native"
 import { FloatingAction } from "react-native-floating-action"
 import taskStore from "../stores/taskStore"
 import Toast from "react-native-toast-message"
 import HTML from "react-native-render-html"
+import { DateTime } from "luxon"
 
 const Stack = createStackNavigator()
 
@@ -57,39 +59,58 @@ function TodoScreen() {
                 <Text>{task.title}</Text>
               </View>
               <View style={{ flex: 0.4 }}>
-                <Text>{String(task.start)}</Text>
+                <Text>
+                  {DateTime.fromJSDate(new Date(task.start)).toISODate()}
+                </Text>
               </View>
             </View>
           </TouchableOpacity>
         ))
       )}
       <Modal animationType="slide" visible={openEditor.display}>
-        <Button
-          onPress={() =>
-            setOpenEditor({ ...openEditor, ...{ display: false } })
-          }
-          title="Close"
-        />
-        {/* HTML view */}
-        {openEditor.type === "view" ? (
-          <View>
-            <Text>{note.title}</Text>
-            <HTML
-              source={{
-                html: note.description
+        <SafeAreaView>
+          <Button
+            onPress={() =>
+              setOpenEditor({ ...openEditor, ...{ display: false } })
+            }
+            title="Close"
+          />
+          {/* HTML view */}
+          {openEditor.type === "view" ? (
+            <View style={{ padding: 10 }}>
+              <Text>Title: {note.title}</Text>
+              <Text style={{ fontStyle: "italic", textAlign: "right" }}>
+                {DateTime.fromJSDate(new Date(note.start))
+                  .toISO()
+                  .split(".")[0]
+                  .replace("T", " ")}
+              </Text>
+              <View
+                style={{
+                  borderTopWidth: 1,
+                  borderTopColor: "#aaaaaa",
+                  marginTop: 10,
+                  paddingTop: 10
+                }}
+              >
+                <HTML
+                  source={{
+                    html: note.description
+                  }}
+                />
+              </View>
+            </View>
+          ) : (
+            <EditorScreen
+              onSuccess={() => {
+                setOpenEditor({ ...openEditor, ...{ display: false } })
+                Toast.show({
+                  text1: "Successfully saved !"
+                })
               }}
             />
-          </View>
-        ) : (
-          <EditorScreen
-            onSuccess={() => {
-              setOpenEditor({ ...openEditor, ...{ display: false } })
-              Toast.show({
-                text1: "Successfully saved !"
-              })
-            }}
-          />
-        )}
+          )}
+        </SafeAreaView>
       </Modal>
       {/* floating action button to add task */}
       <FloatingAction
