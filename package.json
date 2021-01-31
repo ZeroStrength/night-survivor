@@ -7,7 +7,9 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "release": "standard-version -a"
+    "release": "standard-version -a",
+    "build:android": "expo build:android",
+    "build:ios": "expo build:ios"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.12.1",
